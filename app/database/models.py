@@ -22,10 +22,11 @@ class Nft(Base):
     __tablename__ = 'nfts'
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(25))
-    description: Mapped[str] = mapped_column(String(120))
-    price: Mapped[int] = mapped_column()
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    name: Mapped[str] = mapped_column(String(25), nullable=True)
+    href: Mapped[str] = mapped_column(String(40))
+    description: Mapped[str] = mapped_column(String(120), nullable=True)
+    price: Mapped[int] = mapped_column(String(40), nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.tg_id'))
 
 
 async def async_main():
