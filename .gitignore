@@ -1,3 +1,5 @@
 .venv/
 app/__pycache__
 db.sqlite3
+.coverage
+__pycache__

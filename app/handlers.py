@@ -31,7 +31,6 @@ class NFT(StatesGroup):
     address = State()
     chain = State()
     identifier = State()
-    
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
