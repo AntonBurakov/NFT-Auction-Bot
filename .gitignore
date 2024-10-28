@@ -2,7 +2,6 @@
 app/__pycache__
 .coverage
 __pycache__
-.dockerignore
 .env
 .DS_Store
 app/database/__pycache__
