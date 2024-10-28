@@ -6,12 +6,14 @@ from aiogram.fsm.context import FSMContext
 import requests
 from aiogram.types import InputMediaPhoto, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-
+import os
+from dotenv import load_dotenv
 import app.database.requests as rq
 
 router = Router()
-OPENSEA_API_KEY = '97017e45abdc4f15ad893d7dc7595718'
+load_dotenv()
 
+opensea_token = os.getenv('OPENSEA_API_KEY')
 
 class NFTAccount(StatesGroup):
     account = State()
@@ -61,7 +63,7 @@ async def register_blockchain(message: Message, state: FSMContext):
     url = f"https://api.opensea.io/api/v2/chain/{blockchain}/account/{account}/nfts"
 
     headers = {
-        'x-api-key': OPENSEA_API_KEY  
+        'x-api-key': opensea_token  
     }
     
     response = requests.get(url, headers=headers)
@@ -240,7 +242,7 @@ async def register_blockchain(message: Message, state: FSMContext):
     url = f"https://api.opensea.io/api/v2/chain/{chain}/contract/{address}/nfts/{identifier}"
 
     headers = {
-        'x-api-key': OPENSEA_API_KEY  
+        'x-api-key': opensea_token  
     }
     
     response = requests.get(url, headers=headers)

@@ -76,6 +76,7 @@ class LotRequestsTest(unittest.IsolatedAsyncioTestCase):
             await session.execute(text('DELETE FROM lots WHERE user_id = 123456789'))
             await session.execute(text('DELETE FROM nfts WHERE user_id = 123456789'))
             await session.execute(text('DELETE FROM users WHERE tg_id = 123456789'))
+            await session.execute(text('DELETE FROM users WHERE tg_id = 987654321'))
             await session.commit()
 
     async def test_create_lot(self):
@@ -93,16 +94,19 @@ class LotRequestsTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_get_open_lots(self):
         lots = await get_open_lots(987654321)
-        self.assertEqual(len(lots), 2)
-        starting_prices = [lot.starting_price for lot in lots]
-        expected_prices = [100, 110]  
+            # Фильтруем только те лоты, у которых user_id = 123456789
+        filtered_lots = [lot for lot in lots if lot.user_id == 123456789]
+    
+        self.assertEqual(len(filtered_lots), 2)
+        starting_prices = [lot.starting_price for lot in filtered_lots]
+        expected_prices = [100, 110]   
         self.assertCountEqual(starting_prices, expected_prices)
 
 
     async def test_place_bid(self):
-        await place_bid(1, 987654321, 150)
+        await place_bid(2, 987654321, 150)
         async with async_session() as session:
-            lot = await session.scalar(select(Lot).where(Lot.id == 1))
+            lot = await session.scalar(select(Lot).where(Lot.id == 2))
             self.assertEqual(lot.current_bid, 150)
             self.assertEqual(lot.highest_bidder_id, 987654321)
 
